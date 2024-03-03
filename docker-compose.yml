@@ -8,11 +8,9 @@ services:
       - ./server:/usr/src/app
     ports:
       - 8004:8000
-    environment:
-      - ENVIRONMENT=dev
-      - TESTING=0
-      - DATABASE_URL=postgres://postgres:postgres@server-db:5432/server_dev
-      - DATABASE_TEST_URL=postgres://postgres:postgres@server-db:5432/server_test
+    env_file:
+    - path: ./.env
+      required: false
     depends_on:
         - server-db
 
@@ -25,3 +23,5 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+
+ 

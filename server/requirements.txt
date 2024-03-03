@@ -6,3 +6,5 @@ tortoise-orm==0.20.0
 aerich==0.7.2
 httpx==0.26.0
 pytest==7.4.4
+spotipy==2.22.1
+pytest-mock==3.12.0
