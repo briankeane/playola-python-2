@@ -1,6 +1,7 @@
 from spotipy import oauth2, Spotify
 
 from fastapi import Depends
+
 from playola.models.tortoise import User
 from playola.config import Settings, get_settings
 
@@ -22,7 +23,7 @@ scopes = ",".join(
 
 
 async def get_or_create_user_from_spotify_code(code: str, 
-                                               settings: Settings = Depends(get_settings)):
+                                               settings: Settings = Depends(get_settings)) -> User:
   sp_oauth = oauth2.SpotifyOAuth(
         settings.spotify_client_id,
         settings.spotify_client_secret,

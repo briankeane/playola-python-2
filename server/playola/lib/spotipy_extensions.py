@@ -1,26 +1,26 @@
 from playola.config import get_settings
-from playola.models.tortoise import Curator
+from playola.models.tortoise import User
 from spotipy import CacheHandler, Spotify, SpotifyOAuth
 
 
 class UserSpecificCacheHandler(CacheHandler):
-    def __init__(self, curator):
-        self.curator = curator
+    def __init__(self, user):
+        self.user = user
 
     def get_cached_token(self):
-        print("getting cached info", self.curator.spotify_token_info)
-        return self.curator.spotify_token_info
+        print("getting cached info", self.user.spotify_token_info)
+        return self.user.spotify_token_info
 
     def save_token_to_cache(self, token_info):
         print("saving token info: ", token_info)
-        self.curator.spotify_token_info = token_info
-        self.curator.save()
+        self.user.spotify_token_info = token_info
+        self.user.save()
 
 
 class UserSpecificSpotify(Spotify):
-    def __init__(self, curator: Curator):
-        print("curator.spotify_token_info", curator.spotify_token_info)
-        cache_handler = UserSpecificCacheHandler(curator=curator)
+    def __init__(self, user: User):
+        print("user.spotify_token_info", user.spotify_token_info)
+        cache_handler = UserSpecificCacheHandler(user=user)
         settings = get_settings()
         spotify_oath = SpotifyOAuth(
             client_id=settings.spotify_client_id,

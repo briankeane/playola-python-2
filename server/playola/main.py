@@ -2,8 +2,8 @@ import os
 import logging
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-from contextlib import asynccontextmanager
 from playola.api import ping, spotify_auth
 from playola.db import init_db
 
@@ -15,6 +15,19 @@ def create_application() -> FastAPI:
     application = FastAPI()
     application.include_router(ping.router, prefix="/api/v1")
     application.include_router(spotify_auth.router, prefix="/api/v1/spotify", tags=["spotify_auth"])
+
+    origins = [
+    "http://localhost:3000",
+    "https://localhost:3000",
+    "https://admin.playola.fm",
+]
+    application.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
     return application
 

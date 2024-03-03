@@ -28,17 +28,17 @@ scopes = ",".join(
 # we exchange the code for a token_info and redirect the user to
 # their page.
 @router.get("/code")
-async def spotifyAuthCode(payload: SpotifyCodePayloadSchema = Depends(), settings: Settings = Depends(get_settings)):
-    get_or_create_user_from_spotify_code(payload.code)
+async def spotify_auth_code(payload: SpotifyCodePayloadSchema = Depends(), settings: Settings = Depends(get_settings)):
+    user = await get_or_create_user_from_spotify_code(payload.code)
     return RedirectResponse(
-        f"{settings.client_base_url}/curators/{curator.id}",
+        f"{settings.client_base_url}/users/{user.spotify_user_id}",
         status_code=status.HTTP_302_FOUND,
     )
 
 # redirects the user to spotify to sign in... then to /code with a "code"
 # that we exchange for a token_info
 @router.get("/authorize")
-async def spotifyAuthRedirect(settings: Settings = Depends(get_settings)):
+async def spotify_auth_redirect(settings: Settings = Depends(get_settings)):
     sp_oauth = oauth2.SpotifyOAuth(
         settings.spotify_client_id,
         settings.spotify_client_secret,
