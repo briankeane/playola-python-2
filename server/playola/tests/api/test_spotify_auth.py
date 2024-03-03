@@ -6,7 +6,7 @@ from playola.config import get_settings
 
 
 @pytest.mark.asyncio
-def test_spotify_code(test_app, mocker):
+def test_spotify_code_success(test_app, mocker):
     user = User(spotify_token_info={"access_token": "THE ACCESS_TOKEN", "refresh_token": "THE_REFRESH_TOKEN"},
         spotify_user_id="the_spotify_user_id",
         spotify_display_name="the_display_name")

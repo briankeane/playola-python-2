@@ -2,3 +2,9 @@
 tortoise_orm = "playola.db.TORTOISE_ORM"
 location = "./migrations"
 src_folder = "./."
+
+
+[tool.pytest.ini_options]
+markers = [
+    "asyncio",
+]
