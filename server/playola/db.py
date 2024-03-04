@@ -18,6 +18,16 @@ TORTOISE_ORM = {
     },
 }
 
+TORTOISE_ORM_TEST = {
+    "connections": {"default": os.environ.get("DATABASE_TEST_URL")},
+    "apps": {
+        "models": {
+            "models": ["playola.models.tortoise", "aerich.models"],
+            "default_connection": "default",
+        },
+    },
+}
+
 
 def init_db(app: FastAPI) -> None:
     register_tortoise(
@@ -31,6 +41,7 @@ def init_db(app: FastAPI) -> None:
 
 async def generate_schema() -> None:
     log.info("Initializing Tortoise...")
+    Tortoise.init_models(["playola.models.tortoise"], "models")
 
     await Tortoise.init(
         db_url=os.environ.get("DATABASE_URL"),

@@ -24,16 +24,21 @@ scopes = ",".join(
     ]
 )
 
+
 # this is where the user is redirected after signing into spotify.
 # we exchange the code for a token_info and redirect the user to
 # their page.
 @router.get("/code")
-async def spotify_auth_code(payload: SpotifyCodePayloadSchema = Depends(), settings: Settings = Depends(get_settings)):
+async def spotify_auth_code(
+    payload: SpotifyCodePayloadSchema = Depends(),
+    settings: Settings = Depends(get_settings),
+):
     user = await get_or_create_user_from_spotify_code(payload.code)
     return RedirectResponse(
         f"{settings.client_base_url}/users/{user.spotify_user_id}",
         status_code=status.HTTP_302_FOUND,
     )
+
 
 # redirects the user to spotify to sign in... then to /code with a "code"
 # that we exchange for a token_info
