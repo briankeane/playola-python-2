@@ -16,7 +16,7 @@ def create_application() -> FastAPI:
     application = FastAPI()
     application.include_router(ping.router, prefix="/api/v1")
     application.include_router(
-        spotify_auth.router, prefix="/api/v1/spotify", tags=["spotify_auth"]
+        spotify_auth.router, prefix="/api/v1/auth/spotify", tags=["spotify_auth"]
     )
     application.include_router(users.router, prefix="/api/v1/users", tags=["users"])
 

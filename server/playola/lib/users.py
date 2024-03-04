@@ -3,8 +3,6 @@ from typing import Optional, List
 
 from spotipy import oauth2, Spotify
 
-from fastapi import Depends
-
 from playola.lib.spotipy_extensions import UserSpecificSpotify
 from playola.lib.errors import ItemNotFoundException
 from playola.models.tortoise import User, Track, UserTrack
@@ -27,13 +25,13 @@ scopes = ",".join(
 )
 
 
-async def get_or_create_user_from_spotify_code(
-    code: str, settings: Settings = Depends(get_settings)
-) -> User:
+async def get_or_create_user_from_spotify_code(code: str) -> User:
+    settings = get_settings()
+    print(f"here::: {settings.base_url}/api/v1/auth/spotify/code")
     sp_oauth = oauth2.SpotifyOAuth(
         settings.spotify_client_id,
         settings.spotify_client_secret,
-        f"{settings.base_url}/v1/auth/spotify/code",
+        f"{settings.base_url}/api/v1/auth/spotify/code",
         scope=scopes,
     )
     token_info = sp_oauth.get_access_token(code, check_cache=False)

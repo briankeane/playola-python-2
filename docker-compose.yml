@@ -24,4 +24,26 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
- 
+  db-initializer:
+    build: ./server
+    command: sh ./db/reset_db.sh
+    volumes:
+      - ./server:/usr/src/app
+    depends_on:
+      - server-db
+      - server
+
+  admin-react:
+    build: 
+      context: ./admin-react-app
+      dockerfile: Dockerfile
+    command: npm run dev
+    volumes:
+      - ./admin-react-app:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+    - path: ./.env
+      required: false
+    ports:
+      - 3000:3000
+      - 3010:3010
